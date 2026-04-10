@@ -5,7 +5,7 @@ import os
 import sys
 from pathlib import Path
 
-import fsspec
+import fsspec  # type: ignore[import-untyped]
 
 
 # ── Authentication helpers ────────────────────────────────────────────────────
@@ -30,7 +30,7 @@ def _azure_storage_options() -> dict:
         if account_key:
             return {"account_name": account_name, "account_key": account_key}
         try:
-            from azure.identity import DefaultAzureCredential  # type: ignore[import-untyped]
+            from azure.identity import DefaultAzureCredential  # type: ignore[import-not-found]
         except ImportError as exc:
             raise ImportError(
                 "azure-identity is required for DefaultAzureCredential auth. "
