@@ -7,7 +7,6 @@ from pathlib import Path
 
 import fsspec  # type: ignore[import-untyped]
 
-
 # ── Authentication helpers ────────────────────────────────────────────────────
 
 
