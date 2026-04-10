@@ -24,6 +24,7 @@ def _make_client(entities: list[str]) -> MagicMock:
 # Happy path
 # ---------------------------------------------------------------------------
 
+
 class TestExtractEntitiesHappyPath:
     def test_returns_entities_from_search_fields(self):
         client = _make_client(["Albert Einstein", "Germany"])
@@ -62,6 +63,7 @@ class TestExtractEntitiesHappyPath:
 # Missing / empty fields
 # ---------------------------------------------------------------------------
 
+
 class TestExtractEntitiesMissingFields:
     def test_missing_search_field_is_ignored(self):
         client = _make_client(["Entity"])
@@ -96,6 +98,7 @@ class TestExtractEntitiesMissingFields:
 # ---------------------------------------------------------------------------
 # LLM response edge cases
 # ---------------------------------------------------------------------------
+
 
 class TestExtractEntitiesLLMResponse:
     def test_llm_returns_empty_entities_list(self):

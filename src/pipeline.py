@@ -15,6 +15,7 @@ Usage (script)
 --------------
 python run_pipeline.py <same flags>
 """
+
 from __future__ import annotations
 
 import json
@@ -29,8 +30,8 @@ from utils.cli import build_parser
 from utils.entities import extract_all_entities
 from utils.io import build_corpus_texts, load_documents
 
-
 # ── Pipeline ─────────────────────────────────────────────────────────────────
+
 
 def run_pipeline(
     input_dir: Path,
@@ -71,7 +72,9 @@ def run_pipeline(
     keyword_results = entity_document_search(entities, corpus_texts)
 
     # Embedding pass
-    all_embeddings = get_embeddings(corpus_texts + entities, client, model=embedding_model)
+    all_embeddings = get_embeddings(
+        corpus_texts + entities, client, model=embedding_model
+    )
     corpus_embeddings = all_embeddings[: len(corpus_texts)]
     entity_embeddings = all_embeddings[len(corpus_texts) :]
 
@@ -105,6 +108,7 @@ def run_pipeline(
 
 
 # ── Entry point ──────────────────────────────────────────────────────────────
+
 
 def main() -> None:
     args = build_parser().parse_args()

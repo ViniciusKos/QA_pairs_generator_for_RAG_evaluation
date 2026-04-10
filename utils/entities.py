@@ -15,7 +15,9 @@ def extract_all_entities(
     ordered: list[str] = []
     for i, doc in enumerate(documents):
         entities = extract_entities(doc, search_fields, client, model=model)
-        print(f"[info] Document {i + 1}/{len(documents)}: {len(entities)} entity(ies) extracted.")
+        print(
+            f"[info] Document {i + 1}/{len(documents)}: {len(entities)} entity(ies) extracted."
+        )
         for entity in entities:
             if entity not in seen:
                 seen.add(entity)

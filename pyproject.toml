@@ -9,7 +9,9 @@ description = "Generate QA pairs from JSON documents to evaluate RAG pipelines"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "black>=26.3.1",
     "openai>=1.0.0",
+    "tox>=4.52.1",
 ]
 
 [project.optional-dependencies]
@@ -22,3 +24,6 @@ qa-generate = "src.pipeline:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src", "utils"]
+
+[tool.uv]
+link-mode = "copy"

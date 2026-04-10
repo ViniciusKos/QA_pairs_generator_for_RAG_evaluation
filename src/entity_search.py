@@ -29,9 +29,7 @@ def extract_entities(
     Returns a list of entity name strings found in the search fields.
     """
     search_text = "\n".join(
-        str(document[field])
-        for field in search_fields
-        if field in document
+        str(document[field]) for field in search_fields if field in document
     )
     if not search_text.strip():
         return []

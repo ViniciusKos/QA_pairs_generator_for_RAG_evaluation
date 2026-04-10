@@ -4,6 +4,7 @@
 
 The installed CLI command ``qa-generate`` delegates to the same entry point.
 """
+
 from src.pipeline import main  # noqa: F401
 
 if __name__ == "__main__":

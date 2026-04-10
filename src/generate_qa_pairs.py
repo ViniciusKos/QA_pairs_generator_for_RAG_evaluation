@@ -45,9 +45,7 @@ def generate_qa_pairs(
 
     for entity, documents in entity_documents.items():
         for document in documents:
-            user_message = (
-                f"Entity: {entity}\n\nDocument:\n{document}"
-            )
+            user_message = f"Entity: {entity}\n\nDocument:\n{document}"
             response = client.chat.completions.create(
                 model=model,
                 messages=[
