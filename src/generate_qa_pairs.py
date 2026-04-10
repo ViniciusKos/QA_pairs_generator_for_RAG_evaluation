@@ -1,0 +1,75 @@
+from __future__ import annotations
+
+import json
+from typing import TypedDict
+
+from src.llm_factory import LLMClient
+
+
+class QAPair(TypedDict):
+    entity: str
+    question: str
+    answer: str
+    source_document: str
+
+
+_SYSTEM_PROMPT = (
+    "You are an expert at creating question-and-answer pairs for RAG evaluation. "
+    "Given an entity name and a document, generate one clear, factual question "
+    "whose answer is fully contained in the document. "
+    "Reply ONLY with a JSON object with two keys: \"question\" and \"answer\"."
+)
+
+
+def generate_qa_pairs(
+    entity_documents: dict[str, list[str]],
+    client: LLMClient,
+    model: str = "gpt-4o-mini",
+) -> list[QAPair]:
+    """Generate QA pairs for every (entity, document) combination.
+
+    Parameters
+    ----------
+    entity_documents:
+        Mapping of entity name -> list of document strings.
+    client:
+        Authenticated :class:`openai.OpenAI` or :class:`openai.AzureOpenAI` instance.
+    model:
+        OpenAI chat model to use.
+
+    Returns
+    -------
+    list[QAPair]
+        One QA pair per document, enriched with the entity name and the
+        original document text.
+    """
+    qa_pairs: list[QAPair] = []
+
+    for entity, documents in entity_documents.items():
+        for document in documents:
+            user_message = (
+                f"Entity: {entity}\n\nDocument:\n{document}"
+            )
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": _SYSTEM_PROMPT},
+                    {"role": "user", "content": user_message},
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.2,
+            )
+
+            raw = response.choices[0].message.content or "{}"
+            parsed: dict[str, str] = json.loads(raw)
+
+            qa_pairs.append(
+                QAPair(
+                    entity=entity,
+                    question=parsed.get("question", ""),
+                    answer=parsed.get("answer", ""),
+                    source_document=document,
+                )
+            )
+
+    return qa_pairs
