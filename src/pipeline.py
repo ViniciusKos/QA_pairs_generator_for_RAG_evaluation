@@ -24,7 +24,7 @@ from pathlib import Path
 from src.embedding_search import find_top_n_similar, get_embeddings
 from src.entity_search import entity_document_search
 from src.generate_qa_pairs import QAPair, generate_qa_pairs
-from src.llm_factory import create_azure_openai_client, create_openai_client
+from src.llm_factory import LLMClient, create_azure_openai_client, create_openai_client
 from utils.cli import build_parser
 from utils.entities import extract_all_entities
 from utils.io import build_corpus_texts, load_documents
@@ -43,6 +43,7 @@ def run_pipeline(
     top_n: int = 3,
 ) -> list[QAPair]:
     # ── 1. LLM client ────────────────────────────────────────────────────────
+    client: LLMClient
     if client_type == "azure":
         client = create_azure_openai_client()
     else:

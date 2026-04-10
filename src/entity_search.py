@@ -48,7 +48,6 @@ def extract_entities(
     return json.loads(raw).get("entities", [])
 
 
-
 def entity_document_search(
     entities: list[str],
     corpus: list[str],
