@@ -12,74 +12,65 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.12"
-      - run: pip install tox
-      - run: tox -e format
+      - run: uv tool run tox -e format
 
   lint:
     name: Lint (flake8)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.12"
-      - run: pip install tox
-      - run: tox -e lint
+      - run: uv tool run tox -e lint
 
   typecheck:
     name: Type check (mypy)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.12"
-      - run: pip install tox
-      - run: tox -e typecheck
+      - run: uv tool run tox -e typecheck
 
   test:
     name: Unit tests (pytest)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.12"
-      - run: pip install tox
-      - run: tox
+      - run: uv tool run tox
 
   sdist:
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.12"
-      - run: pip install build
-      - run: python -m build --sdist
+      - run: uv build --sdist
       - uses: actions/upload-artifact@v4
         with:
           name: sdist
           path: dist/*.tar.gz
 
-  wheels:
-    name: Build wheels (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+  wheel:
+    name: Build wheel
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.12"
-      - run: pip install cibuildwheel build
-      - run: python -m cibuildwheel --output-dir wheelhouse
+      - run: uv build --wheel
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ matrix.os }}
-          path: wheelhouse/*.whl
+          name: wheel
+          path: dist/*.whl
