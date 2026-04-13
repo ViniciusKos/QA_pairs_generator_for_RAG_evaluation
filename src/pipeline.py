@@ -86,7 +86,9 @@ def run_pipeline(
     # Merge: keyword-first, deduplicated
     entity_documents: dict[str, list[str]] = {}
     for entity, entity_emb in zip(entities, entity_embeddings):
-        top_indices = find_top_n_similar_records(entity_emb, corpus_embeddings, n=top_n_similar_records)
+        top_indices = find_top_n_similar_records(
+            entity_emb, corpus_embeddings, n=top_n_similar_records
+        )
         embedding_docs = [corpus_texts[i] for i in top_indices]
         seen: set[str] = set()
         combined: list[str] = []
