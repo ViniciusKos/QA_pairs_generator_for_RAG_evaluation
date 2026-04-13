@@ -37,7 +37,7 @@ packages = ["src", "utils"]
 source = "vcs"
 
 [tool.hatch.build.hooks.vcs]
-version-file = "src/_version.py"
+version-file = "_version.py"
 
 [tool.uv]
 link-mode = "copy"

@@ -207,4 +207,4 @@ marimo/_lsp/
 __marimo__/
 
 # version build
-prompts/_version.py
+_version.py
